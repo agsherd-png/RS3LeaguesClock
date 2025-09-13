@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Countdown to RS3 Leagues</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #0f172a;
+    }
+    p {
+      color: #475569;
+      margin-bottom: 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .box {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+    .value {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .label {
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Countdown to RS3 Leagues</h1>
+    <p id="target-label"></p>
+    <div class="grid" id="countdown">
+      <div class="box"><div class="value" id="days">00</div><div class="label">Days</div></div>
+      <div class="box"><div class="value" id="hours">00</div><div class="label">Hours</div></div>
+      <div class="box"><div class="value" id="minutes">00</div><div class="label">Minutes</div></div>
+      <div class="box"><div class="value" id="seconds">00</div><div class="label">Seconds</div></div>
+    </div>
+    <p style="margin-top:1rem;font-size:0.8rem;color:#64748b;">
+      This timer is based on <strong>Mon, 15 Sep 2025, 13:00:00 BST (UTC+1)</strong>.<br/>
+      (Your browser automatically converts it to your local time.)
+    </p>
+  </div>
+
+  <script>
+    const TARGET_ISO_UTC = "2025-09-15T12:00:00Z"; // 1pm BST is 12:00 UTC
+    const targetDate = new Date(TARGET_ISO_UTC);
+
+    document.getElementById("target-label").textContent =
+      "Your local time: " + targetDate.toLocaleString(undefined, { dateStyle: "full", timeStyle: "long" });
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate.getTime() - now.getTime();
+      let totalSeconds = Math.max(0, Math.floor(diff / 1000));
+      const days = Math.floor(totalSeconds / 86400);
+      totalSeconds %= 86400;
+      const hours = Math.floor(totalSeconds / 3600);
+      totalSeconds %= 3600;
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById("days").textContent = pad(days);
+      document.getElementById("hours").textContent = pad(hours);
+      document.getElementById("minutes").textContent = pad(minutes);
+      document.getElementById("seconds").textContent = pad(seconds);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
